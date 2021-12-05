@@ -1,0 +1,22 @@
+services:
+  dbserver:
+    image: mysql:5.7
+    container_name: demo-flyway
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: Demo1234
+    ports:
+      - "3336:3306"
+      - "33360:33060"
+    volumes:
+      - ./tmp/mysql:/var/lib/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      start_period: 10s
+      interval: 1s
+      timeout: 1s
+      retries: 10
+    restart: on-failure
